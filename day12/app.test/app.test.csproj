@@ -24,4 +24,10 @@
     <ProjectReference Include="..\app\app.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

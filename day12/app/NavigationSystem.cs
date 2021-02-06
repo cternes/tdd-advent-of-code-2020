@@ -1,6 +1,7 @@
 namespace app
 {
     using System.Collections.Generic;
+    using Exception;
     using Model;
 
     public class NavigationSystem
@@ -9,11 +10,7 @@ namespace app
 
         public NavigationSystem(List<string> instructions)
         {
-            ship = new Ship(new Position
-            {
-                X = 0,
-                Y = 0
-            }, 90);
+            ship = new Ship(Position.HomePosition(), Constants.East);
 
             FollowInstructions(instructions);
         }
@@ -31,15 +28,29 @@ namespace app
         {
             switch (command.Action)
             {
-                case ActionType.MoveForward:
-                    ship.MoveForward(command.Value);
-                    break;
                 case ActionType.MoveNorth:
                     ship.MoveNorth(command.Value);
+                    break;
+                case ActionType.MoveSouth:
+                    ship.MoveSouth(command.Value);
+                    break;
+                case ActionType.MoveEast:
+                    ship.MoveEast(command.Value);
+                    break;
+                case ActionType.MoveWest:
+                    ship.MoveWest(command.Value);
+                    break;
+                case ActionType.RotateLeft:
+                    ship.RotateLeft(command.Value);
                     break;
                 case ActionType.RotateRight:
                     ship.RotateRight(command.Value);
                     break;
+                case ActionType.MoveForward:
+                    ship.MoveForward(command.Value);
+                    break;
+                default:
+                    throw new InvalidActionException($"Unknown action type {command.Action}");
             }
         }
 

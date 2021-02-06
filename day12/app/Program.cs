@@ -2,11 +2,18 @@
 
 namespace app
 {
-    class Program
+    using System.Threading.Tasks;
+    using Provider;
+
+    public static class Program
     {
-        static void Main()
+        public static async Task Main()
         {
-            Console.WriteLine("Hello World!");
+            var provider = new InstructionProvider("Input/input.txt");
+            var instructions = await provider.ReadInstructions();
+            var distance = new NavigationSystem(instructions).CalculateManhattanDistance();
+
+            Console.WriteLine($"ManhattanDistance: {distance}");
         }
     }
 }

@@ -1,15 +1,13 @@
 ﻿namespace app.test.Model
 {
+    using System;
     using app.Model;
+    using Exception;
     using FluentAssertions;
     using Xunit;
 
     public class ShipTest
     {
-        private const int North = 0;
-        private const int East = 90;
-        private const int South = 180;
-
         [Fact]
         public void ShouldMoveNorthRelativeToPosition()
         {
@@ -65,10 +63,22 @@
             AssertThatShipMovedEast(pos);
         }
 
+        [Fact]
+        public void ShouldMoveWestRelativeToPosition()
+        {
+            // Arrange
+            var ship = CreateShip();
+
+            // Act
+            var pos = ship.MoveWest(10);
+
+            // Assert
+            AssertThatShipMovedWest(pos);
+        }
 
         [Theory]
-        [InlineData(East)]
-        [InlineData(South)]
+        [InlineData(Constants.East)]
+        [InlineData(Constants.South)]
         public void ShouldRotateRight(int degree)
         {
             // Arrange
@@ -81,40 +91,79 @@
             direction.Should().Be(degree);
         }
 
-
         [Fact]
         public void ShouldRotateRightRelativeToDirection()
         {
             // Arrange
-            var ship = CreateShip(East);
+            var ship = CreateShip(Constants.East);
 
             // Act
-            var direction = ship.RotateRight(East);
+            var direction = ship.RotateRight(90);
 
             // Assert
-            direction.Should().Be(South);
+            direction.Should().Be(Constants.South);
         }
 
+
+        [Fact]
+        public void ShouldRotateToEast()
+        {
+            // Arrange
+            var ship = CreateShip(Constants.West);
+
+            // Act
+            var direction = ship.RotateRight(180);
+
+            // Assert
+            direction.Should().Be(Constants.East);
+        }
+
+        [Fact]
+        public void ShouldRotateToWest()
+        {
+            // Arrange
+            var ship = CreateShip(Constants.East);
+
+            // Act
+            var direction = ship.RotateLeft(180);
+
+            // Assert
+            direction.Should().Be(Constants.West);
+        }
+
+        [Fact]
+        public void ShouldRotateLeftRelativeToDirection()
+        {
+            // Arrange
+            var ship = CreateShip(Constants.East);
+
+            // Act
+            var direction = ship.RotateLeft(90);
+
+            // Assert
+            direction.Should().Be(Constants.North);
+        }
 
         [Fact]
         public void ShouldRotateMultipleTimes()
         {
             // Arrange
             var ship = CreateShip();
-            ship.RotateRight(East);
+            ship.RotateRight(Constants.East);
 
             // Act
             var direction = ship.RotateRight(90);
 
             // Assert
-            direction.Should().Be(South);
+            direction.Should().Be(Constants.South);
         }
 
-
         [Theory]
-        [InlineData(North)]
-        [InlineData(East)]
-        [InlineData(South)]
+        [InlineData(Constants.North)]
+        [InlineData(Constants.NorthFullAngle)]
+        [InlineData(Constants.East)]
+        [InlineData(Constants.South)]
+        [InlineData(Constants.West)]
         public void ShouldMoveForwardToNorth(int direction)
         {
             // Arrange
@@ -126,15 +175,32 @@
             // Assert
             switch (direction)
             {
-                case North: AssertThatShipMovedNorth(pos);
+                case Constants.North: AssertThatShipMovedNorth(pos);
                     break;
-                case East: AssertThatShipMovedEast(pos);
+                case Constants.NorthFullAngle: AssertThatShipMovedNorth(pos);
                     break;
-                case South: AssertThatShipMovedSouth(pos);
+                case Constants.East: AssertThatShipMovedEast(pos);
+                    break;
+                case Constants.South: AssertThatShipMovedSouth(pos);
+                    break;
+                case Constants.West: AssertThatShipMovedWest(pos);
                     break;
             }
         }
 
+        [Fact]
+        public void ShouldThrowWhenDirectionIsInvalid()
+        {
+            // Arrange
+            var ship = CreateShip();
+            ship.RotateRight(10);
+
+            // Act
+            Action moveForward = () => ship.MoveForward(10);
+
+            // Assert
+            moveForward.Should().Throw<InvalidDirectionException>();
+        }
 
         [Theory]
         [InlineData(100, 100, 200)]
@@ -172,6 +238,12 @@
         {
             pos.X.Should().Be(100);
             pos.Y.Should().Be(90);
+        }
+
+        private static void AssertThatShipMovedWest(Position pos)
+        {
+            pos.X.Should().Be(90);
+            pos.Y.Should().Be(100);
         }
 
         private static Ship CreateShip(int direction = 0)

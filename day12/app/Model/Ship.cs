@@ -1,9 +1,11 @@
 ﻿namespace app.Model
 {
     using System;
+    using Exception;
 
     public class Ship
     {
+        private const int CompleteAngle = 360;
         private Position position;
         private int direction;
 
@@ -45,10 +47,46 @@
 
             return position;
         }
+        public Position MoveWest(int value)
+        {
+            position =  new Position
+            {
+                X = position.X - value,
+                Y = position.Y
+            };
+
+            return position;
+        }
 
         public int RotateRight(int degree)
         {
             direction += degree;
+
+            if (direction >  CompleteAngle)
+            {
+                direction = Math.Abs(CompleteAngle - direction);
+            }
+            else if (direction > CompleteAngle)
+            {
+                direction = CompleteAngle - direction;
+            }
+
+            return direction;
+        }
+
+        public int RotateLeft(int degree)
+        {
+            direction -= degree;
+
+            if (direction < 0)
+            {
+                direction = CompleteAngle - Math.Abs(direction);
+            }
+            else if (direction > CompleteAngle)
+            {
+                direction = CompleteAngle - direction;
+            }
+
             return direction;
         }
 
@@ -59,10 +97,12 @@
                 0 => MoveNorth(value),
                 90 => MoveEast(value),
                 180 => MoveSouth(value),
-                _ => throw new NotImplementedException($"Cannot move to direction {direction}")
+                270 => MoveWest(value),
+                360 => MoveNorth(value),
+                _ => throw new InvalidDirectionException($"Cannot move to direction {direction}")
             };
         }
-
+        
         public int CalculateManhattanDistance()
         {
             return Math.Abs(position.X) + Math.Abs(position.Y);
