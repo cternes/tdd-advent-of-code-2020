@@ -2,6 +2,7 @@
 {
     using System;
     using app.Model;
+    using app.Model.Ship;
     using Exception;
     using FluentAssertions;
     using Xunit;
@@ -85,10 +86,10 @@
             var ship = CreateShip();
 
             // Act
-            var direction = ship.RotateRight(degree);
+            ship.RotateRight(degree);
 
             // Assert
-            direction.Should().Be(degree);
+            ship.Direction.Should().Be(degree);
         }
 
         [Fact]
@@ -98,12 +99,11 @@
             var ship = CreateShip(Constants.East);
 
             // Act
-            var direction = ship.RotateRight(90);
+            ship.RotateRight(90);
 
             // Assert
-            direction.Should().Be(Constants.South);
+            ship.Direction.Should().Be(Constants.South);
         }
-
 
         [Fact]
         public void ShouldRotateToEast()
@@ -112,10 +112,10 @@
             var ship = CreateShip(Constants.West);
 
             // Act
-            var direction = ship.RotateRight(180);
+            ship.RotateRight(180);
 
             // Assert
-            direction.Should().Be(Constants.East);
+            ship.Direction.Should().Be(Constants.East);
         }
 
         [Fact]
@@ -125,10 +125,10 @@
             var ship = CreateShip(Constants.East);
 
             // Act
-            var direction = ship.RotateLeft(180);
+            ship.RotateLeft(180);
 
             // Assert
-            direction.Should().Be(Constants.West);
+            ship.Direction.Should().Be(Constants.West);
         }
 
         [Fact]
@@ -138,10 +138,10 @@
             var ship = CreateShip(Constants.East);
 
             // Act
-            var direction = ship.RotateLeft(90);
+            ship.RotateLeft(90);
 
             // Assert
-            direction.Should().Be(Constants.North);
+            ship.Direction.Should().Be(Constants.North);
         }
 
         [Fact]
@@ -152,10 +152,10 @@
             ship.RotateRight(Constants.East);
 
             // Act
-            var direction = ship.RotateRight(90);
+            ship.RotateRight(90);
 
             // Assert
-            direction.Should().Be(Constants.South);
+            ship.Direction.Should().Be(Constants.South);
         }
 
         [Theory]
@@ -254,5 +254,6 @@
                 Y = 100
             }, direction);
         }
+        
     }
 }

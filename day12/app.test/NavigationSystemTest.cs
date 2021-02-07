@@ -4,6 +4,8 @@ namespace app.test
 {
     using System;
     using System.Collections.Generic;
+    using app.Model;
+    using app.Model.Ship;
     using Exception;
     using FluentAssertions;
 
@@ -22,7 +24,7 @@ namespace app.test
                 "F11"
             };
 
-            var navigationSystem = new NavigationSystem(instructions);
+            var navigationSystem = new NavigationSystem(CreateShip(), instructions);
 
             // Act
             var distance = navigationSystem.CalculateManhattanDistance();
@@ -48,7 +50,7 @@ namespace app.test
                 "F10"
             };
 
-            var navigationSystem = new NavigationSystem(instructions);
+            var navigationSystem = new NavigationSystem(CreateShip(), instructions);
 
             // Act
             var distance = navigationSystem.CalculateManhattanDistance();
@@ -56,7 +58,6 @@ namespace app.test
             // Assert
             distance.Should().Be(190);
         }
-
 
         [Fact]
         public void ShouldThrowWhenActionIsInvalid()
@@ -71,11 +72,47 @@ namespace app.test
             // Act
             Action followInstructions = () =>
             {
-                _ = new NavigationSystem(instructions);
+                _ = new NavigationSystem(CreateShip(), instructions);
             };
 
             // Assert
             followInstructions.Should().Throw<InvalidActionException>();
+        }
+
+        [Fact]
+        public void ShouldFollowWaypointInstructionsAndCalculateManhattanDistance()
+        {
+            // Arrange
+            var instructions = new List<string>
+            {
+                "F10",
+                "N3",
+                "F7",
+                "R90",
+                "F11"
+            };
+
+            var navigationSystem = new NavigationSystem(CreateFerry(), instructions);
+
+            // Act
+            var distance = navigationSystem.CalculateManhattanDistance();
+
+            // Assert
+            distance.Should().Be(286);
+        }
+
+        private static Ship CreateShip()
+        {
+            return new Ship(Position.HomePosition(), Constants.East);
+        }
+
+        private static Ship CreateFerry()
+        {
+            return new WaypointFerry(new Position
+            {
+                X = 10,
+                Y = 1
+            }, Constants.East);
         }
     }
 }

@@ -3,15 +3,15 @@ namespace app
     using System.Collections.Generic;
     using Exception;
     using Model;
+    using Model.Ship;
 
     public class NavigationSystem
     {
-        private readonly Ship ship;
+        private readonly IShip ship;
 
-        public NavigationSystem(List<string> instructions)
+        public NavigationSystem(IShip ship, List<string> instructions)
         {
-            ship = new Ship(Position.HomePosition(), Constants.East);
-
+            this.ship = ship;
             FollowInstructions(instructions);
         }
 
