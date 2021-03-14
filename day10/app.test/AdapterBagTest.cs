@@ -1,12 +1,11 @@
 ﻿namespace app.test
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using FluentAssertions;
+    using Service;
     using Xunit;
 
-    public class AdapterTest
+    public class AdapterBagTest
     {
         [Fact]
         public void ShouldGetBuiltInAdapterRating()
@@ -15,7 +14,7 @@
             var adapters = AdaptersInBag();
 
             // Act
-            var rating = new BuiltInAdapter(adapters).GetRate();
+            var rating = new AdapterBag(adapters).GetBuiltInAdapterRate();
 
 
             // Assert
@@ -40,7 +39,7 @@
             var adapters = AdaptersInBag();
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindNextAdapter(output);
+            var rating = new AdapterBag(adapters).FindNextAdapter(output);
 
             // Assert
             rating.Should().Be(expectedAdapter);
@@ -59,7 +58,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
+            var rating = new AdapterBag(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(0);
@@ -77,7 +76,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
+            var rating = new AdapterBag(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(1);
@@ -95,7 +94,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
+            var rating = new AdapterBag(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(2);
@@ -113,10 +112,26 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
+            var rating = new AdapterBag(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(3);
+        }
+
+
+        [Fact]
+        public void ShouldReturnNumberOf1JoltDifferences()
+        {
+            // Arrange
+            var adapters = AdaptersInBag();
+
+            var adapterBag = new AdapterBag(adapters);
+            
+            // Act
+            adapterBag.FindFirstMatchingAdapter(0);
+            
+            // Assert
+            adapterBag.NumberOf1JoltDifferences.Should().Be(1);
         }
 
         private static List<int> AdaptersInBag()
@@ -135,55 +150,6 @@
                 12,
                 4
             };
-        }
-    }
-
-    public class BuiltInAdapter
-    {
-        private readonly List<int> adapters;
-
-        public BuiltInAdapter(List<int> adapters)
-        {
-            this.adapters = adapters;
-        }
-
-        public int GetRate()
-        {
-            return adapters.Max() + 3;
-        }
-
-        public int FindFirstMatchingAdapter(int output)
-        {
-            for (var i = 0; i < 4; i++)
-            {
-                var matchingAdapter = HasMatchingAdapter(output + i);
-                if (matchingAdapter != null) return (int) matchingAdapter;
-            }
-
-            throw new NotSupportedException("Could not find matching adapter");
-        }
-
-        public int FindNextAdapter(int output)
-        {
-            for (var i = 1; i < 4; i++)
-            {
-                var matchingAdapter = HasMatchingAdapter(output + i);
-                if (matchingAdapter != null) return (int) matchingAdapter;
-            }
-            
-            throw new NotSupportedException("Could not find matching adapter");
-        }
-
-        private int? HasMatchingAdapter(int output)
-        {
-            try
-            {
-                return adapters.First(i => i == output);
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
         }
     }
 }
