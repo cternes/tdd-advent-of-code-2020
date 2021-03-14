@@ -40,7 +40,7 @@
             var adapters = AdaptersInBag();
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindNextAdapter(output, adapters);
+            var rating = new BuiltInAdapter(adapters).FindNextAdapter(output);
 
             // Assert
             rating.Should().Be(expectedAdapter);
@@ -59,7 +59,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0, adapters);
+            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(0);
@@ -77,7 +77,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0, adapters);
+            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(1);
@@ -95,7 +95,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0, adapters);
+            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(2);
@@ -113,7 +113,7 @@
             };
 
             // Act
-            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0, adapters);
+            var rating = new BuiltInAdapter(adapters).FindFirstMatchingAdapter(0);
 
             // Assert
             rating.Should().Be(3);
@@ -152,29 +152,29 @@
             return adapters.Max() + 3;
         }
 
-        public int FindFirstMatchingAdapter(int output, List<int> adapters)
+        public int FindFirstMatchingAdapter(int output)
         {
             for (var i = 0; i < 4; i++)
             {
-                var matchingAdapter = HasMatchingAdapter(output + i, adapters);
+                var matchingAdapter = HasMatchingAdapter(output + i);
                 if (matchingAdapter != null) return (int) matchingAdapter;
             }
 
             throw new NotSupportedException("Could not find matching adapter");
         }
 
-        public int FindNextAdapter(int output, List<int> adapters)
+        public int FindNextAdapter(int output)
         {
             for (var i = 1; i < 4; i++)
             {
-                var matchingAdapter = HasMatchingAdapter(output + i, adapters);
+                var matchingAdapter = HasMatchingAdapter(output + i);
                 if (matchingAdapter != null) return (int) matchingAdapter;
             }
             
             throw new NotSupportedException("Could not find matching adapter");
         }
 
-        private static int? HasMatchingAdapter(int output, List<int> adapters)
+        private int? HasMatchingAdapter(int output)
         {
             try
             {
