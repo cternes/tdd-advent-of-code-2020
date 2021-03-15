@@ -118,7 +118,6 @@
             rating.Should().Be(3);
         }
 
-
         [Fact]
         public void ShouldReturnNumberOf1JoltDifferences()
         {
@@ -129,9 +128,27 @@
             
             // Act
             adapterBag.FindFirstMatchingAdapter(0);
+            adapterBag.FindNextAdapter(4);
             
             // Assert
-            adapterBag.NumberOf1JoltDifferences.Should().Be(1);
+            adapterBag.NumberOf1JoltDifferences.Should().Be(2);
+        }
+
+        [Fact]
+        public void ShouldReturnNumberOf3JoltDifferences()
+        {
+            // Arrange
+            var adapters = AdaptersInBag();
+
+            var adapterBag = new AdapterBag(adapters);
+            
+            // Act
+            adapterBag.FindNextAdapter(1);
+            adapterBag.FindNextAdapter(7);
+
+            
+            // Assert
+            adapterBag.NumberOf3JoltDifferences.Should().Be(2);
         }
 
         private static List<int> AdaptersInBag()

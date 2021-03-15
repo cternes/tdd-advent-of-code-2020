@@ -9,6 +9,7 @@
         private readonly List<int> adapters;
         
         public int NumberOf1JoltDifferences { get; private set; }
+        public int NumberOf3JoltDifferences { get; private set; }
 
         public AdapterBag(List<int> adapters)
         {
@@ -38,11 +39,26 @@
                 var matchingAdapter = HasMatchingAdapter(output + i);
                 if (matchingAdapter != null)
                 {
+                    CountJoltDifference(i);
+
                     return (int) matchingAdapter;
                 }
             }
 
             throw new NotSupportedException("Could not find matching adapter");
+        }
+
+        private void CountJoltDifference(int jolt)
+        {
+            if (jolt == 1)
+            {
+                NumberOf1JoltDifferences += 1;
+            }
+
+            if (jolt == 3)
+            {
+                NumberOf3JoltDifferences += 1;
+            }
         }
 
         private int? HasMatchingAdapter(int output)
