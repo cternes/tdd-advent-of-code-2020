@@ -21,17 +21,17 @@
             return adapters.Max() + 3;
         }
 
-        public int FindFirstMatchingAdapter(int output)
+        public int? FindFirstMatchingAdapter(int output)
         {
             return FindMatchingAdapter(output, true);
         }
 
-        public int FindNextAdapter(int output)
+        public int? FindNextAdapter(int output)
         {
             return FindMatchingAdapter(output, false);
         }
 
-        private int FindMatchingAdapter(int output, bool canEqualOutput)
+        private int? FindMatchingAdapter(int output, bool canEqualOutput)
         {
             var startingJoltDiff = canEqualOutput ? 0 : 1;
             for (var i = startingJoltDiff; i < 4; i++)
@@ -41,11 +41,11 @@
                 {
                     CountJoltDifference(i);
 
-                    return (int) matchingAdapter;
+                    return matchingAdapter;
                 }
             }
 
-            throw new NotSupportedException("Could not find matching adapter");
+            return null;
         }
 
         private void CountJoltDifference(int jolt)
@@ -71,6 +71,28 @@
             {
                 return null;
             }
+        }
+
+        public void CheckAllAdapters()
+        {
+            var currentOutput = FindFirstMatchingAdapter(0);
+
+            if (currentOutput == null)
+            {
+                return;
+            }
+
+            while (true)
+            {
+                currentOutput = FindNextAdapter((int) currentOutput);
+                if (currentOutput == null)
+                {
+                    NumberOf3JoltDifferences += 1;
+                    GetBuiltInAdapterRate();
+                    break;
+                }
+            }
+
         }
     }
 }

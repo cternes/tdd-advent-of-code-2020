@@ -45,6 +45,70 @@
             rating.Should().Be(expectedAdapter);
         }
 
+
+        [Fact]
+        public void ShouldCountNumberOfJoltDifferences()
+        {
+            // Arrange
+            var adapters = AdaptersInBag();
+            var adapterBag = new AdapterBag(adapters);
+
+            // Act
+            adapterBag.CheckAllAdapters();
+
+            // Assert
+            adapterBag.NumberOf1JoltDifferences.Should().Be(7);
+            adapterBag.NumberOf3JoltDifferences.Should().Be(5);
+        }
+
+        [Fact]
+        public void ShouldCountNumberOfJoltDifferencesWithBiggerExample()
+        {
+            // Arrange
+            var adapters = new List<int>
+            {
+                28,
+                33,
+                18,
+                42,
+                31,
+                14,
+                46,
+                20,
+                48,
+                47,
+                24,
+                23,
+                49,
+                45,
+                19,
+                38,
+                39,
+                11,
+                1,
+                32,
+                25,
+                35,
+                8,
+                17,
+                7,
+                9,
+                4,
+                2,
+                34,
+                10,
+                3,
+            };
+            var adapterBag = new AdapterBag(adapters);
+
+            // Act
+            adapterBag.CheckAllAdapters();
+
+            // Assert
+            adapterBag.NumberOf1JoltDifferences.Should().Be(22);
+            adapterBag.NumberOf3JoltDifferences.Should().Be(10);
+        }
+
         [Fact]
         public void ShouldFindAdapterWhichCanConnectDirectly()
         {

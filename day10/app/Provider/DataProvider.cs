@@ -14,10 +14,17 @@
             this.filePath = filePath;
         }
 
-        public async Task<List<string>> ReadInstructions()
+        public async Task<List<int>> ReadLines()
         {
-            var allLines = await File.ReadAllLinesAsync(filePath);
-            return allLines.ToList();
+            var lines = await File.ReadAllLinesAsync(filePath);
+
+            var numbers = new List<int>();
+            foreach (var line in lines)
+            {
+                numbers.Add(int.Parse(line));
+            }
+
+            return numbers;
         }
     }
 }
