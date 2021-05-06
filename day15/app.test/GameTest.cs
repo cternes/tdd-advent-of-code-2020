@@ -135,6 +135,23 @@
             // Assert
             result.Should().Be(981);
         }
+        
+        [Fact]
+        public void ShouldReturn18After30MioTurns()
+        {
+            // Arrange
+            var game = CreateGame(3,2,1);
+
+            // Act
+            var result = -1;
+            for (var i = 0; i < 30_000_000; i++)
+            {
+                result = game.Play();
+            }
+
+            // Assert
+            result.Should().Be(18);
+        }
 
         private static Game CreateGame(params int[] numbers)
         {

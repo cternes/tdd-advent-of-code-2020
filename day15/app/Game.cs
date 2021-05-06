@@ -1,7 +1,6 @@
 ﻿namespace app
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Model;
 
     public class Game
@@ -29,7 +28,7 @@
 
         private void StoreThatNumberWasSpokenThisTurn(int result)
         {
-            var spokenNumber = spokenNumberHistory.FirstOrDefault(i => i.Value == result);
+            spokenNumberHistory.TryGetValue(new SpokenNumber(result), out var spokenNumber);
             spokenNumber?.SpokenAt(turnCounter);
         }
 
@@ -56,8 +55,8 @@
 
         private int GetSpokenNumberFromHistory()
         {
-            var spokenNumber = spokenNumberHistory.First(i => i.Value == spokenNumberInPreviousTurn);
-            var result = spokenNumber.DiffSpokenTurnsBefore;
+            spokenNumberHistory.TryGetValue(new SpokenNumber(spokenNumberInPreviousTurn), out var spokenNumber);
+            var result = spokenNumber!.DiffSpokenTurnsBefore;
             spokenNumber.SpokenAt(turnCounter);
 
             return result;

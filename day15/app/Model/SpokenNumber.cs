@@ -25,6 +25,11 @@
             }
         }
 
+        public SpokenNumber(int value)
+            :this(value, NotSpoken)
+        {
+        }
+
         public SpokenNumber(int value, int turn)
         {
             Value = value;
