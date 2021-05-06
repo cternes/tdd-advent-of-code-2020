@@ -6,9 +6,9 @@
 
     public class Game
     {
-        private int previousResult;
-        private int turn;
-        private readonly HashSet<SpokenNumber> history = new();
+        private int spokenNumberInPreviousTurn;
+        private int turnCounter;
+        private readonly HashSet<SpokenNumber> spokenNumberHistory = new();
         private readonly List<int> startingNumbers;
 
         public Game(List<int> startingNumbers)
@@ -18,31 +18,54 @@
 
         public int Play()
         {
-            if (turn < startingNumbers.Count)
+            var result = CalculateResult();
+            IncreaseTurnCounter();
+
+            StoreThatNumberWasSpokenThisTurn(result);
+            WriteResultHistory(result);
+            
+            return result;
+        }
+
+        private void StoreThatNumberWasSpokenThisTurn(int result)
+        {
+            var spokenNumber = spokenNumberHistory.FirstOrDefault(i => i.Value == result);
+            spokenNumber?.SpokenAt(turnCounter);
+        }
+
+        private void IncreaseTurnCounter()
+        {
+            turnCounter++;
+        }
+
+        private void WriteResultHistory(int result)
+        {
+            spokenNumberHistory.Add(new SpokenNumber(result, turnCounter));
+            spokenNumberInPreviousTurn = result;
+        }
+
+        private int CalculateResult()
+        {
+            if (NotAllStartingNumbersWereSpoken())
             {
-                var result = startingNumbers[turn];
-                turn++;
-                history.Add(new SpokenNumber(result, turn));
-                previousResult = result;
-                return result;
+                return startingNumbers[turnCounter];
             }
 
-            var spokenNumber = history.First(i => i.Value == previousResult);
-            previousResult = spokenNumber.DiffSpokenTurnsBefore;
-            spokenNumber.SpokenAt(turn);
-            turn++;
+            return GetSpokenNumberFromHistory();
+        }
 
-            history.TryGetValue(new SpokenNumber(previousResult, turn), out var x);
-            if (x != null)
-            {
-                x.SpokenAt(turn);
-            }
-            else
-            {
-                history.Add(new SpokenNumber(previousResult, turn));
-            }
+        private int GetSpokenNumberFromHistory()
+        {
+            var spokenNumber = spokenNumberHistory.First(i => i.Value == spokenNumberInPreviousTurn);
+            var result = spokenNumber.DiffSpokenTurnsBefore;
+            spokenNumber.SpokenAt(turnCounter);
 
-            return previousResult;
+            return result;
+        }
+
+        private bool NotAllStartingNumbersWereSpoken()
+        {
+            return turnCounter < startingNumbers.Count;
         }
     }
 }

@@ -119,6 +119,23 @@
             result.Should().Be(1836);
         }
 
+        [Fact]
+        public void ShouldReturnResultAfter2020Turns()
+        {
+            // Arrange
+            var game = CreateGame(8,0,17,4,1,12);
+
+            // Act
+            var result = -1;
+            for (var i = 0; i < 2020; i++)
+            {
+                result = game.Play();
+            }
+
+            // Assert
+            result.Should().Be(981);
+        }
+
         private static Game CreateGame(params int[] numbers)
         {
             var startingNumbers = new List<int>();
