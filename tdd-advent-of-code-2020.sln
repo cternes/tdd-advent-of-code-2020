@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day15", "day15\day15.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day15.test", "day15.test\day15.test.csproj", "{5CE5BCC6-5ED0-4F28-896D-2A25851CDE78}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day20", "day17\day20.csproj", "{33E3EA5A-9C26-4ABF-A490-65CE58E8C989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day20", "day20\day20.csproj", "{33E3EA5A-9C26-4ABF-A490-65CE58E8C989}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day20.test", "day17.test\day20.test.csproj", "{84E1AF7F-4EE7-48CA-85C1-55BB945C294D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "day20.test", "day20.test\day20.test.csproj", "{84E1AF7F-4EE7-48CA-85C1-55BB945C294D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileReader", "FileReader\FileReader.csproj", "{0A276DD8-2678-40C5-8317-307DA40DD840}"
 EndProject
